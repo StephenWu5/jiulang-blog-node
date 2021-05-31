@@ -10,10 +10,15 @@ exports.create = (req, res) => {
   }
 
   // Create a user
+  var someText = "123456";
+  // MD5 Hash
+  let password =  require("crypto")
+    .createHash("md5")
+    .update(req.body.password + someText)
+    .digest("hex");
   const User = new user({
-    email: req.body.email,
+    password: password,
     name: req.body.name,
-    active: req.body.active
   });
 
   // Save user in the database
@@ -22,7 +27,11 @@ exports.create = (req, res) => {
       res.status(500).send({
         message: err.message || "Some error occurred while creating the user.",
       });
-    else res.send(data);
+    else res.send({
+      code: 200,
+      message: '注册成功',
+      data:data,
+    });
   });
 };
 
@@ -143,3 +152,28 @@ exports.login = (req, res) => {
     }
   });
 };
+
+// 用户注册
+exports.register = (req, res) => {
+  let params = req.body;
+  user.register(params, (err, data) => {
+    if (err) {
+      if (err.kind === "already_register") {
+        res.status(400).send({
+          code: 400,
+          message: "已注册",
+          data: [],
+        });
+      } else {
+        res.status(500).send({
+          code: 500,
+          message: "服务器错误1",
+          data: [],
+        });
+      }
+    } else {
+      this.create(req, res);
+    }
+  });
+};
+

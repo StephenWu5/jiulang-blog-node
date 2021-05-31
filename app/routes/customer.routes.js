@@ -4,8 +4,11 @@ module.exports = app => {
   // Create a new user
   app.post("/users", users.create);
 
-  // Create a new user
+  // 登录
   app.post("/api/login", users.login);
+
+  // 注册
+  app.post("/api/register", users.register);
 
   // Retrieve all users
   app.get("/users", users.findAll);

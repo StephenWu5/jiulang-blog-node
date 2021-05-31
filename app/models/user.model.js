@@ -2,9 +2,8 @@ const sql = require("./db.js");
 
 // constructor
 const user = function (user) {
-  this.email = user.email;
+  this.password = user.password;
   this.name = user.name;
-  this.active = user.active;
 };
 
 user.create = (newuser, result) => {
@@ -40,8 +39,15 @@ user.findById = (userId, result) => {
 };
 
 user.login = (params, result) => {
+  // Create a user
+  var someText = "123456";
+  // MD5 Hash
+  let password = require("crypto")
+    .createHash("md5")
+    .update(params.password + someText)
+    .digest("hex");
   sql.query(
-    `SELECT name, password FROM users WHERE name = '${params.name}' and  password = '${params.password}'`,
+    `SELECT name, password FROM users WHERE name = '${params.name}' and  password = '${password}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -57,6 +63,27 @@ user.login = (params, result) => {
 
       // not found user with the id
       result({ kind: "not_found" }, null);
+    }
+  );
+};
+
+user.register = (params, result) => {
+  sql.query(
+    `SELECT name FROM users WHERE name = '${params.name}'`,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (res.length) {
+        // not found user with the id
+        result({ kind: "already_register" }, null);
+        return;
+      }
+
+      result(null, res[0]);
     }
   );
 };
