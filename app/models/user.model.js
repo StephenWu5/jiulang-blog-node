@@ -39,15 +39,8 @@ user.findById = (userId, result) => {
 };
 
 user.login = (params, result) => {
-  // Create a user
-  var someText = "123456";
-  // MD5 Hash
-  let password = require("crypto")
-    .createHash("md5")
-    .update(params.password + someText)
-    .digest("hex");
   sql.query(
-    `SELECT name, password FROM users WHERE name = '${params.name}' and  password = '${password}'`,
+    `SELECT name, password FROM users WHERE name = '${params.name}' and  password = '${params.password}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

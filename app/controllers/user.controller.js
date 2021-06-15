@@ -1,5 +1,8 @@
 const user = require("../models/user.model.js");
 
+// someText 是盐值
+var salt = "123456212123243556！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！%！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！";
+
 // Create and Save a new user
 exports.create = (req, res) => {
   // Validate request
@@ -10,11 +13,11 @@ exports.create = (req, res) => {
   }
 
   // Create a user
-  var someText = "123456";
+  
   // MD5 Hash
   let password =  require("crypto")
     .createHash("md5")
-    .update(req.body.password + someText)
+    .update(req.body.password + salt)
     .digest("hex");
   const User = new user({
     password: password,
@@ -125,13 +128,19 @@ exports.deleteAll = (req, res) => {
 
 // Find a single user with a userId
 exports.login = (req, res) => {
+  // Create a user
+  // MD5 Hash
+  req.body.password = require("crypto")
+    .createHash("md5")
+    .update(req.body.password + salt)
+    .digest("hex");
   user.login(req.body, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(400).send({
           code: 400,
           message: "用户名或者密码错误",
-          data: []
+          data: [],
         });
       } else {
         res.status(500).send({
@@ -141,13 +150,13 @@ exports.login = (req, res) => {
         });
       }
     } else {
-      res.cookie("resc", "设置到cookie里的值", {
+      res.cookie("resc", data, {
         expires: new Date(Date.now() + 900000000),
       });
       res.status(200).send({
         code: 200,
         message: "登录成功",
-        data: []
+        data: [],
       });
     }
   });
@@ -172,6 +181,7 @@ exports.register = (req, res) => {
         });
       }
     } else {
+      //注册
       this.create(req, res);
     }
   });
