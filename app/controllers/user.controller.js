@@ -3,6 +3,67 @@ const user = require("../models/user.model.js");
 // someText 是盐值
 var salt = "123456212123243556！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！%！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！";
 
+// Find a single user with a userId
+exports.login = (req, res) => {
+  // Create a user
+  // MD5 Hash
+  req.body.password = require("crypto")
+    .createHash("md5")
+    .update(req.body.password + salt)
+    .digest("hex");
+  user.login(req.body, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(400).send({
+          code: 400,
+          message: "用户名或者密码错误",
+          data: [],
+        });
+      } else {
+        res.status(500).send({
+          code: 500,
+          message: "用户名或者密码错误或者服务器错误",
+          data: [],
+        });
+      }
+    } else {
+      res.cookie("resc", data, {
+        expires: new Date(Date.now() + 900000000),
+      });
+      res.status(200).send({
+        code: 200,
+        message: "登录成功",
+        data: [],
+      });
+    }
+  });
+};
+
+// 用户注册
+exports.register = (req, res) => {
+  let params = req.body;
+  user.register(params, (err, data) => {
+    if (err) {
+      if (err.kind === "already_register") {
+        res.status(400).send({
+          code: 400,
+          message: "已注册",
+          data: [],
+        });
+      } else {
+        res.status(500).send({
+          code: 500,
+          message: "服务器错误1",
+          data: [],
+        });
+      }
+    } else {
+      //注册
+      this.create(req, res);
+    }
+  });
+};
+
 // Create and Save a new user
 exports.create = (req, res) => {
   // Validate request
@@ -126,64 +187,5 @@ exports.deleteAll = (req, res) => {
   });
 };
 
-// Find a single user with a userId
-exports.login = (req, res) => {
-  // Create a user
-  // MD5 Hash
-  req.body.password = require("crypto")
-    .createHash("md5")
-    .update(req.body.password + salt)
-    .digest("hex");
-  user.login(req.body, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(400).send({
-          code: 400,
-          message: "用户名或者密码错误",
-          data: [],
-        });
-      } else {
-        res.status(500).send({
-          code: 500,
-          message: "用户名或者密码错误或者服务器错误",
-          data: [],
-        });
-      }
-    } else {
-      res.cookie("resc", data, {
-        expires: new Date(Date.now() + 900000000),
-      });
-      res.status(200).send({
-        code: 200,
-        message: "登录成功",
-        data: [],
-      });
-    }
-  });
-};
 
-// 用户注册
-exports.register = (req, res) => {
-  let params = req.body;
-  user.register(params, (err, data) => {
-    if (err) {
-      if (err.kind === "already_register") {
-        res.status(400).send({
-          code: 400,
-          message: "已注册",
-          data: [],
-        });
-      } else {
-        res.status(500).send({
-          code: 500,
-          message: "服务器错误1",
-          data: [],
-        });
-      }
-    } else {
-      //注册
-      this.create(req, res);
-    }
-  });
-};
 

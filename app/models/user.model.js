@@ -6,38 +6,6 @@ const user = function (user) {
   this.name = user.name;
 };
 
-user.create = (newuser, result) => {
-  sql.query("INSERT INTO users SET ?", newuser, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-
-    console.log("created user: ", { id: res.insertId, ...newuser });
-    result(null, { id: res.insertId, ...newuser });
-  });
-};
-
-user.findById = (userId, result) => {
-  sql.query(`SELECT * FROM users WHERE id = ${userId}`, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-
-    if (res.length) {
-      console.log("found user: ", res[0]);
-      result(null, res[0]);
-      return;
-    }
-
-    // not found user with the id
-    result({ kind: "not_found" }, null);
-  });
-};
-
 user.login = (params, result) => {
   sql.query(
     `SELECT name, password FROM users WHERE name = '${params.name}' and  password = '${params.password}'`,
@@ -80,6 +48,40 @@ user.register = (params, result) => {
     }
   );
 };
+
+user.create = (newuser, result) => {
+  sql.query("INSERT INTO users SET ?", newuser, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log("created user: ", { id: res.insertId, ...newuser });
+    result(null, { id: res.insertId, ...newuser });
+  });
+};
+
+user.findById = (userId, result) => {
+  sql.query(`SELECT * FROM users WHERE id = ${userId}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found user: ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found user with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
+
 
 user.getAll = (result) => {
   sql.query("SELECT * FROM users", (err, res) => {
