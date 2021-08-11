@@ -1,4 +1,4 @@
-const user = require("../models/user.model.js");
+const user = require("../models/article.model.js");
 
 // someText 是盐值
 var salt = "123456212123243556！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！%！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！";

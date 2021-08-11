@@ -1,5 +1,6 @@
 module.exports = app => {
   const users = require("../controllers/user.controller.js");
+  const articles = require("../controllers/article.controller.js");
 
   // Create a new user
   app.post("/users", users.create);
@@ -12,14 +13,15 @@ module.exports = app => {
   // Delete a user with userId
   app.delete("/users/:userId", users.delete);
 
-  // =====================登录功能模块=============================================
+  // =====================登录功能模块的开始=============================================
   // 登录
   app.post("/api/login", users.login);
   // 注册
   app.post("/api/register", users.register);
+  // =====================登录功能模块的结束=============================================
 
   // =====================文章功能模块=============================================
   // 登录
-  app.post("/api/articles/dispatch", users.login);
+  app.post("/api/articles/dispatch", articles.create);
   // 注册
 };
