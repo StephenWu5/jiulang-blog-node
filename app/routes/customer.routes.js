@@ -21,7 +21,9 @@ module.exports = app => {
   // =====================登录功能模块的结束=============================================
 
   // =====================文章功能模块=============================================
-  // 登录
+  // 发文
   app.post("/api/articles/dispatch", articles.create);
+  // 查询
+  app.post("/api/articles/query", articles.findAll);
   // 注册
 };
