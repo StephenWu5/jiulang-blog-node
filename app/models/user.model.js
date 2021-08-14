@@ -8,7 +8,7 @@ const user = function (user) {
 
 user.login = (params, result) => {
   sql.query(
-    `SELECT name, password FROM users WHERE name = '${params.name}' and  password = '${params.password}'`,
+    `SELECT name, password, id FROM users WHERE name = '${params.name}' and  password = '${params.password}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

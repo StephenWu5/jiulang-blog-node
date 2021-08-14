@@ -33,7 +33,7 @@ exports.login = (req, res) => {
       res.status(200).send({
         code: 200,
         message: "登录成功",
-        data: [],
+        data: data,
       });
     }
   });

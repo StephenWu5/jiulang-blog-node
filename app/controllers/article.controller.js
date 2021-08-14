@@ -1,4 +1,5 @@
 const article = require("../models/article.model.js");
+const { getDesc, getNow } = require("../common/util.mjs");
 
 // Create and Save a new article
 exports.create = (req, res) => {
@@ -10,9 +11,15 @@ exports.create = (req, res) => {
   }
 
   // Create a article
+  let userData = getDesc(req.headers.cookie);
+  let time = getNow();
   const Article = new article({
     title: req.body.title,
     content: req.body.content,
+    author: userData.name,
+    author_id: userData.id,
+    create_time: time,
+    status: '1'
   });
 
   // Save article in the database
@@ -31,13 +38,19 @@ exports.create = (req, res) => {
 
 // Retrieve all articles from the database.
 exports.findAll = (req, res) => {
+  let data =  getDesc(req.headers.cookie);
+
   article.getAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving articles."
       });
-    else res.send(data);
+    else res.send({
+      code: 200,
+      message: "查询成功",
+      data: data,
+    });
   });
 };
 

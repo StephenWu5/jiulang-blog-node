@@ -4,6 +4,10 @@ const sql = require("./db.js");
 const article = function (article) {
   this.title = article.title;
   this.content = article.content;
+  this.author = article.author;
+  this.author_id = article.author_id;
+  this.create_time = article.create_time;
+  this.status = article.status;
 };
 
 article.create = (newarticle, result) => {
