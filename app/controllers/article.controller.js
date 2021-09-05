@@ -19,7 +19,7 @@ exports.create = (req, res) => {
     author: userData.name,
     author_id: userData.id,
     create_time: time,
-    status: '1'
+    status: req.body.status,
   });
 
   // Save article in the database
