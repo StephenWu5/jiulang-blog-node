@@ -76,43 +76,41 @@ exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
   }
 
-  article.updateById(
-    req.params.articleId,
-    new article(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found article with id ${req.params.articleId}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error updating article with id " + req.params.articleId
-          });
-        }
-      } else res.send(data);
-    }
-  );
+  // update a article
+  let userData = getDesc(req.headers.cookie);
+  const Article = new article({
+    title: req.body.title,
+    content: req.body.content,
+    author: userData.name,
+    author_id: userData.id,
+    status: req.body.status,
+  });
+
+  article.updateById(req.body.id, Article, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: "Error updating article with id " + req.body.id,
+      });
+    } else res.send({
+      code: 200,
+      message: "更新成功",
+      data: data,
+    });
+  });
 };
 
 // Delete a article with the specified articleId in the request
 exports.delete = (req, res) => {
-  article.remove(req.params.articleId, (err, data) => {
+  article.remove(req.body.id, (err, data) => {
     if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found article with id ${req.params.articleId}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Could not delete article with id " + req.params.articleId
-        });
-      }
-    } else res.send({ message: `article was deleted successfully!` });
+      res.status(500).send({
+        message: "Could not delete article with id " + req.params.articleId
+      });
+    } else res.send({ code: 200, message: `删除文章成功!` });
   });
 };
 

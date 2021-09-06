@@ -59,8 +59,8 @@ article.getAll = (result) => {
 
 article.updateById = (id, article, result) => {
   sql.query(
-    "UPDATE articles SET email = ?, name = ?, active = ? WHERE id = ?",
-    [article.email, article.name, article.active, id],
+    `UPDATE articles SET status = ?, content = ?, title = ? WHERE id = ?`,
+    [article.status, article.content, article.title, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
