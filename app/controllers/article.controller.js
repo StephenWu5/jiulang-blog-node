@@ -89,6 +89,7 @@ exports.update = (req, res) => {
     author_id: userData.id,
     status: req.body.status,
   });
+  let message = req.body.status == 0 ? "保存成功" : "更新成功";
 
   article.updateById(req.body.id, Article, (err, data) => {
     if (err) {
@@ -97,7 +98,7 @@ exports.update = (req, res) => {
       });
     } else res.send({
       code: 200,
-      message: "更新成功",
+      message: message,
       data: data,
     });
   });
