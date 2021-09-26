@@ -41,6 +41,11 @@ exports.findAll = (req, res) => {
   let data =  getDesc(req.headers.cookie);
 
   article.getAll((err, data) => {
+    data = data.sort(function (a, b) {
+      //sort 按发表时间正序排序
+      return Date.parse(b.create_time) - Date.parse(a.create_time);
+    });
+
     if (err)
       res.status(500).send({
         message:
