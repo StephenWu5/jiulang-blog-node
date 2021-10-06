@@ -1,6 +1,7 @@
 module.exports = app => {
   const users = require("../controllers/user.controller.js");
   const articles = require("../controllers/article.controller.js");
+  const tags = require("../controllers/tag.controller.js");
 
   // Create a new user
   app.post("/users", users.create);
@@ -20,7 +21,7 @@ module.exports = app => {
   app.post("/api/register", users.register);
   // =====================登录功能模块的结束=============================================
 
-  // =====================文章功能模块=============================================
+  // =====================文章功能模块的开始=============================================
   // 发文--新增博文
   app.post("/api/articles/dispatch", articles.create);
   // 更新博文
@@ -29,5 +30,14 @@ module.exports = app => {
   app.post("/api/articles/delete", articles.delete);
   // 查询
   app.post("/api/articles/query", articles.findAll);
-  // 注册
+  // =====================文章功能模块的结束=============================================
+
+  // =====================标签功能模块的开始=============================================
+  // 新增标签
+  app.post("/api/tags/create", tags.create);
+  // 删除标签
+  app.post("/api/tags/delete", tags.delete);
+  // 查询标签
+  app.post("/api/tags/query", tags.findAll);
+  // =====================标签功能模块的结束=============================================
 };
