@@ -8,6 +8,7 @@ const article = function (article) {
   this.author_id = article.author_id;
   this.create_time = article.create_time;
   this.status = article.status;
+  this.tags = article.tags;
 };
 
 article.create = (newarticle, result) => {
