@@ -22,14 +22,6 @@ app.use(
   })
 );
 
-// app.use(
-//   "/",
-//   proxy.createProxyMiddleware({
-//     target: "http://localhost:8081",
-//     changeOrigin: true,
-//   })
-// );
-
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
