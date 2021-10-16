@@ -60,8 +60,8 @@ article.getAll = (result) => {
 
 article.updateById = (id, article, result) => {
   sql.query(
-    `UPDATE articles SET status = ?, content = ?, title = ? WHERE id = ?`,
-    [article.status, article.content, article.title, id],
+    `UPDATE articles SET status = ?, content = ?, title = ?, tags = ? WHERE id = ?`,
+    [article.status, article.content, article.title,  article.tags, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

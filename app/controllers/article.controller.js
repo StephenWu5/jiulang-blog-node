@@ -94,6 +94,7 @@ exports.update = (req, res) => {
     author: userData.name,
     author_id: userData.id,
     status: req.body.status,
+    tags: req.body.tags,
   });
   let message = req.body.status == 0 ? "保存成功" : "更新成功";
 
