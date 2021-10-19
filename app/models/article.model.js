@@ -45,16 +45,29 @@ article.findById = (articleId, result) => {
 
 
 
-article.getAll = (result) => {
-  sql.query("SELECT * FROM articles", (err, res) => {
+article.getAll = (pagination,result) => {
+  const current = pagination.current  //当前的num
+  const pageSize = pagination.pageSize  //当前页的数量
+  const params = [(parseInt(current) - 1) * parseInt(pageSize), parseInt(pageSize)]
+  sql.query("SELECT * FROM articles limit ?,?", params, (err, res) => {
     if (err) {
-      console.log("error: ", err);
       result(null, err);
       return;
     }
-
-    console.log("articles: ", res);
-    result(null, res);
+    let sqlTotal = 'select count(*) as total from articles' //as更换名称
+    sql.query(sqlTotal, function (error, among) {
+      if (error) {
+        result(null, error);
+        return;
+      }
+      let total = among[0]['total'] //查询表中的数量
+      result(null, {
+        data: res,
+        current,
+        pageSize,
+        total,
+      });
+    })
   });
 };
 

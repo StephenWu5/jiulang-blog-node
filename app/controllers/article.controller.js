@@ -39,10 +39,14 @@ exports.create = (req, res) => {
 
 // Retrieve all articles from the database.
 exports.findAll = (req, res) => {
-  let data =  getDesc(req.headers.cookie);
+  const pagination = {
+    pageSize: req.body.pageSize || 10,
+    current: req.body.current || 1,
+  }
 
-  article.getAll((err, data) => {
-    data = data.sort(function (a, b) {
+  article.getAll(pagination,(err, resultObj) => {
+    console.log(resultObj, 'resultObj');
+    resultObj.data = resultObj.data.sort(function (a, b) {
       //sort 按发表时间正序排序
       return Date.parse(b.create_time) - Date.parse(a.create_time);
     });
@@ -55,7 +59,7 @@ exports.findAll = (req, res) => {
     else res.send({
       code: 200,
       message: "查询成功",
-      data: data,
+      ...resultObj
     });
   });
 };
