@@ -49,7 +49,7 @@ article.getAll = (pagination,result) => {
   const current = pagination.current  //当前的num
   const pageSize = pagination.pageSize  //当前页的数量
   const params = [(parseInt(current) - 1) * parseInt(pageSize), parseInt(pageSize)]
-  sql.query("SELECT * FROM articles limit ?,?", params, (err, res) => {
+  sql.query("SELECT * FROM articles ORDER BY create_time DESC limit ?,?", params, (err, res) => {
     if (err) {
       result(null, err);
       return;
