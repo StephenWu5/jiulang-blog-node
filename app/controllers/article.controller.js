@@ -1,5 +1,5 @@
 const article = require("../models/article.model.js");
-const { getDesc, getNow } = require("../common/util.mjs");
+const { getDesc, getNow } = require("../common/util.js");
 
 // Create and Save a new article
 exports.create = (req, res) => {

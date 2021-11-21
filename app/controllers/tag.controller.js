@@ -1,5 +1,5 @@
 const tag = require("../models/tag.model.js");
-const { getDesc, getNow } = require("../common/util.mjs");
+const { getDesc, getNow } = require("../common/util.js");
 
 // Create and Save a new tag
 exports.create = (req, res) => {
