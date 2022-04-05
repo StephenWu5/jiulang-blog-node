@@ -49,7 +49,7 @@ exports.findAll = (req, res) => {
         current: req.body.current || 1,
     }
 
-    tag.getAll(pagination,(err, resultObj) => {
+    tag.getAllByPage(pagination,(err, resultObj) => {
         if (err)
             res.status(500).send({
                 message:

@@ -4,7 +4,8 @@ var moment = require("moment");
 
 // 获取登录信息
 let getDesc = (resc) => {
-  let resc1 = querystring.unescape(resc).slice(7);
+  console.log(resc, 'resc1');
+  let resc1 = querystring.unescape(resc).slice(5);
   return JSON.parse(resc1);
 };
 // 获取当前时间

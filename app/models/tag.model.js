@@ -39,7 +39,7 @@ tag.findById = (tagId, result) => {
 
 
 
-tag.getAll = (pagination, result) => {
+tag.getAllByPage = (pagination, result) => {
     const current = pagination.current  //当前的num
     const pageSize = pagination.pageSize  //当前页的数量
     const params = [(parseInt(current) - 1) * parseInt(pageSize), parseInt(pageSize)]
@@ -64,6 +64,19 @@ tag.getAll = (pagination, result) => {
         })
     });
 };
+
+tag.getAll = (result) => {
+    sql.query("SELECT * FROM tags", (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("tags: ", res);
+        result(null, res);
+    });
+}
 
 tag.updateById = (id, tag, result) => {
     sql.query(
