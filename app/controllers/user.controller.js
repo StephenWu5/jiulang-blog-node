@@ -28,9 +28,9 @@ exports.login = (req, res) => {
             }
         } else {
             // 后端设置cookie
-            // res.cookie("resc", data, {
-            // expires: new Date(Date.now() + 900000000),
-            // });
+            res.cookie("resc", JSON.stringify(data), {
+                expires: new Date(Date.now() + 900000000),
+            });
             res.status(200).send({
                 code: 200,
                 message: "登录成功",

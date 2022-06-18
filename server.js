@@ -5,7 +5,9 @@ var proxy = require("http-proxy-middleware");
 
 
 const app = express();
-app.use(express.static('./build'))
+app.use(express.static('./build', {
+    maxage: '0s'
+}))
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
